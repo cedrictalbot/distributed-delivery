@@ -1,27 +1,27 @@
 .custom-tooltip {
-    background-color: white;
-    padding: 0 5px;
-    border : 1px solid #E1E8ED;
-    border-radius: 5px;
-    text-align: left;
-    font-size: small;
+  background-color: white;
+  padding: 0 5px;
+  border: 1px solid #e1e8ed;
+  border-radius: 5px;
+  text-align: left;
+  font-size: small;
 }
 
 .additional-data {
-    border-top-style: solid;
-    border-width: 1px;
-    border-color: #E1E8ED;
-    color: #A1AEB8;
+  border-top-style: solid;
+  border-width: 1px;
+  border-color: #e1e8ed;
+  color: #a1aeb8;
 }
 
 .p2p {
-    color: #12A5ED;
+  color: #12a5ed;
 }
 
 .cdn {
-    color: #C42151;
+  color: #c42151;
 }
 
 .tooltip-label {
-    color: #A1AEB8;
+  color: #a1aeb8;
 }

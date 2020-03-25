@@ -74,7 +74,7 @@ export default class CapacityOffloadGraph extends React.Component {
       <div className="capacity-offload-graph">
         <label>CAPACITY OFFLOAD</label>
         <ResponsiveContainer>
-          <AreaChart data={this.state.chartData}>
+          <AreaChart data={this.state.chartData} syncId="charts">
             <XAxis
               dataKey="date"
               tickFormatter={label => {

@@ -5,7 +5,10 @@ import {
   YAxis,
   Line,
   ResponsiveContainer,
-  Tooltip
+  Tooltip,
+  Brush,
+  AreaChart,
+  Area
 } from "recharts";
 
 import CustomTooltipCV from './CustomTooltipCV/CustomTooltipCV';
@@ -55,11 +58,14 @@ export default class ConcurrentViewersGraph extends React.Component {
 
   render() {
     const ticks = this.getTicks();
+    if (!this.state.chartData) {
+      return null;
+    }
     return (
       <div className="concurrent-viewers-graph">
         <label>CONCURRENT VIEWERS</label>
         <ResponsiveContainer>
-          <LineChart data={this.state.chartData}>
+          <LineChart data={this.state.chartData} syncId="charts">
             <XAxis
               dataKey="date"
               tickFormatter={label => {
@@ -79,6 +85,11 @@ export default class ConcurrentViewersGraph extends React.Component {
               strokeWidth={3}
               dot={false}
             />
+            <Brush>
+              <AreaChart data={this.state.chartData}>
+                <Area dataKey="audience" stroke="#3FCB7E" fill="#3FCB7E" />
+              </AreaChart>
+            </Brush>
           </LineChart>
         </ResponsiveContainer>
       </div>

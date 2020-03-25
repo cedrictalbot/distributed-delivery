@@ -47,19 +47,14 @@ export default class CapacityOffloadGraph extends React.Component {
   }
 
   getTicks() {
-    if (!this.state.chartData) {
-      return [];
-    }
     var ticks = [];
-    var i = 0;
+    var i = this.props.startIndex;
     var d = new Date(this.state.chartData[i].date);
-    while (d.getHours() != 0 && i < this.state.chartData.length) {
+    while (d.getHours() !== 0 && i <= this.props.endIndex) {
       i = i + 1;
       d = new Date(this.state.chartData[i].date);
     }
-    const endDate = new Date(
-      this.state.chartData[this.state.chartData.length - 1].date
-    );
+    const endDate = new Date(this.state.chartData[this.props.endIndex].date);
     // We suppose here timestamps are regular enough there will be a data everyday at the same time
     while (d < endDate) {
       ticks.push(d.getTime());
@@ -69,6 +64,9 @@ export default class CapacityOffloadGraph extends React.Component {
   }
 
   render() {
+    if (!this.state.chartData) {
+      return [];
+    }
     const ticks = this.getTicks();
     const maxCdn = (this.props.maxCdn / 10 ** 9).toFixed(2);
     const maxCdnP2p = this.state.maxCdnP2p

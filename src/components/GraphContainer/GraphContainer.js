@@ -4,7 +4,7 @@ import cookie from "react-cookies";
 
 import CapacityOffloadGraph from "../CapacityOffloadGraph/CapacityOffloadGraph";
 import ConcurrentViewersGraph from "../ConcurrentViewersGraph/ConcurrentViewersGraph";
-import './GraphContainer.css';
+import "./GraphContainer.css";
 
 export default class GraphContainer extends React.Component {
   constructor(props) {
@@ -15,8 +15,12 @@ export default class GraphContainer extends React.Component {
       bandwidthData: null,
       bandwidthMaxCdn: null,
       audienceData: null,
-      sessionToken: cookie.load("sessionToken")
+      sessionToken: cookie.load("sessionToken"),
+      startIndex: 0,
+      endIndex: null
     };
+
+    this.handleUpdate = this.handleUpdate.bind(this);
   }
 
   componentDidMount() {
@@ -77,7 +81,8 @@ export default class GraphContainer extends React.Component {
       dataLoaded: true,
       bandwidthData: data.bandwidth.data,
       audienceData: data.audience.data,
-      bandwidthMaxCdn: data.bandwidthMaxCdn.data.cdn
+      bandwidthMaxCdn: data.bandwidthMaxCdn.data.cdn,
+      endIndex: data.audience.data.audience.length - 1
     });
   }
 
@@ -90,12 +95,23 @@ export default class GraphContainer extends React.Component {
     cookie.remove("sessionToken");
   }
 
+  handleUpdate({ startIndex, endIndex }) {
+    //Without this update function, the XAxis ticks will disappear
+    //when moving the brush
+    this.setState({
+      startIndex,
+      endIndex
+    });
+  }
+
   render() {
     const {
       dataLoaded,
       bandwidthData,
       audienceData,
-      bandwidthMaxCdn
+      bandwidthMaxCdn,
+      startIndex,
+      endIndex
     } = this.state;
     return (
       dataLoaded && (
@@ -104,10 +120,17 @@ export default class GraphContainer extends React.Component {
             <CapacityOffloadGraph
               data={bandwidthData}
               maxCdn={bandwidthMaxCdn}
+              startIndex={startIndex}
+              endIndex={endIndex}
             />
           </div>
           <div className="graph-container">
-            <ConcurrentViewersGraph data={audienceData} />
+            <ConcurrentViewersGraph
+              data={audienceData}
+              handleUpdate={this.handleUpdate}
+              startIndex={startIndex}
+              endIndex={endIndex}
+            />
           </div>
         </div>
       )

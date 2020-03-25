@@ -30,6 +30,7 @@ export default class ConcurrentViewersGraph extends React.Component {
         date: value[0],
         audience: value[1]
       });
+      return value;
     });
     this.setState({ chartData });
   }
@@ -39,19 +40,14 @@ export default class ConcurrentViewersGraph extends React.Component {
   }
 
   getTicks() {
-    if (!this.state.chartData) {
-      return [];
-    }
     var ticks = [];
-    var i = 0;
+    var i = this.props.startIndex;
     var d = new Date(this.state.chartData[i].date);
-    while (d.getHours() != 0 && i < this.state.chartData.length) {
+    while (d.getHours() !== 0 && i <= this.props.endIndex) {
       i = i + 1;
       d = new Date(this.state.chartData[i].date);
     }
-    const endDate = new Date(
-      this.state.chartData[this.state.chartData.length - 1].date
-    );
+    const endDate = new Date(this.state.chartData[this.props.endIndex].date);
     // We suppose here timestamps are regular enough there will be a data everyday at the same time
     while (d < endDate) {
       ticks.push(d.getTime());
@@ -61,10 +57,10 @@ export default class ConcurrentViewersGraph extends React.Component {
   }
 
   render() {
-    const ticks = this.getTicks();
     if (!this.state.chartData) {
       return null;
     }
+    const ticks = this.getTicks();
     return (
       <div className="concurrent-viewers-graph">
         <label>CONCURRENT VIEWERS</label>
@@ -89,7 +85,7 @@ export default class ConcurrentViewersGraph extends React.Component {
               strokeWidth={3}
               dot={false}
             />
-            <Brush>
+            <Brush onChange={this.props.handleUpdate}>
               <AreaChart data={this.state.chartData}>
                 <Area dataKey="audience" stroke="#3FCB7E" fill="#3FCB7E" />
               </AreaChart>

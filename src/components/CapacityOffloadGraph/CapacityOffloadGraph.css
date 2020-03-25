@@ -2,3 +2,7 @@
   text-align: left;
   height: 100%;
 }
+
+.graph-name-label {
+  line-height: 50px;
+}

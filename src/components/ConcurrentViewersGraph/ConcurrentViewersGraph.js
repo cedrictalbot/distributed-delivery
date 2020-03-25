@@ -63,7 +63,7 @@ export default class ConcurrentViewersGraph extends React.Component {
     const ticks = this.getTicks();
     return (
       <div className="concurrent-viewers-graph">
-        <label>CONCURRENT VIEWERS</label>
+        <label className="graph-name-label">CONCURRENT VIEWERS</label>
         <ResponsiveContainer>
           <LineChart data={this.state.chartData} syncId="charts">
             <XAxis

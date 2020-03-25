@@ -17,8 +17,8 @@ export default class CapacityOffloadGraph extends React.Component {
             // We suppose for now that cdn and p2p have the same timestamps in the same order
             chartData.push({
                 'date': new Date(data.cdn[i][0]),
-                'cdn' : data.cdn[i][1],
-                'p2p' : data.p2p[i][1]
+                'cdn' : data.cdn[i][1]/(10**9),
+                'p2p' : data.p2p[i][1]/(10**9)
             })
         }
         this.setState({chartData})
@@ -32,7 +32,7 @@ export default class CapacityOffloadGraph extends React.Component {
         return (
             <AreaChart width={1000} height={300} data={this.state.chartData}>
                 <XAxis dataKey="date"/>
-                <YAxis/>
+                <YAxis tickFormatter={(label) => `${label}\nGbps`}/>
                 <Tooltip />
                 <Area type='monotone' dataKey='cdn' stackId="1" stroke='#C42151' fill='#C42151' />
                 <Area type='monotone' dataKey='p2p' stackId="1" stroke='#12A5ED' fill='#12A5ED' />

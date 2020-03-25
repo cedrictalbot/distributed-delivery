@@ -1,5 +1,5 @@
 import React from 'react';
-import {AreaChart, XAxis, YAxis, Tooltip, Area} from 'recharts';
+import {AreaChart, XAxis, YAxis, Tooltip, Area, ReferenceLine} from 'recharts';
 
 
 export default class CapacityOffloadGraph extends React.Component {
@@ -48,6 +48,7 @@ export default class CapacityOffloadGraph extends React.Component {
 
     render() {
         const ticks = this.getTicks();
+        const maxCdn = (this.props.maxCdn/ 10**9).toFixed(2);
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         return (
             <AreaChart width={1000} height={300} data={this.state.chartData}>
@@ -63,6 +64,7 @@ export default class CapacityOffloadGraph extends React.Component {
                 <Tooltip />
                 <Area type='monotone' dataKey='cdn' stackId="1" stroke='#C42151' fill='#C42151' />
                 <Area type='monotone' dataKey='p2p' stackId="1" stroke='#12A5ED' fill='#12A5ED' />
+                <ReferenceLine y={maxCdn} label={{value :`Maximum CDN contribution : ${maxCdn} Gbps`, position: 'insideBottomLeft'}} stroke='#C42151' strokeDasharray="5 2"/>
             </AreaChart>
         )
     }

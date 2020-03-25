@@ -14,6 +14,7 @@ export default class GraphContainer extends React.Component {
         this.state = {
             dataLoaded : false,
             bandwidthData : null,
+            bandwidthMaxCdn : null,
             audienceData : null,
             sessionToken : cookie.load("sessionToken")
         }
@@ -46,6 +47,7 @@ export default class GraphContainer extends React.Component {
         let data = {
             bandwidth : null,
             audience : null,
+            bandwidthMaxCdn : null,
         }
         try {
             data.bandwidth = await axios.post("http://localhost:3000/bandwidth", {
@@ -53,6 +55,12 @@ export default class GraphContainer extends React.Component {
                 "from" : today - 1209600000,
                 "to" : today
             });
+            data.bandwidthMaxCdn = await axios.post("http://localhost:3000/bandwidth", {
+                "session_token" : this.state.sessionToken,
+                "from" : today - 1209600000,
+                "to" : today,
+                "aggregate" : "max"
+            })
             data.audience = await axios.post("http://localhost:3000/audience", {
                 "session_token" : this.state.sessionToken,
                 "from" : today - 1209600000,
@@ -64,7 +72,8 @@ export default class GraphContainer extends React.Component {
         this.setState({
             dataLoaded: true,
             bandwidthData : data.bandwidth.data,
-            audienceData : data.audience.data
+            audienceData : data.audience.data,
+            bandwidthMaxCdn : data.bandwidthMaxCdn.data.cdn
         })
     }
 
@@ -78,12 +87,12 @@ export default class GraphContainer extends React.Component {
     }
 
     render() {
-        const {dataLoaded, bandwidthData, audienceData} = this.state;
+        const {dataLoaded, bandwidthData, audienceData, bandwidthMaxCdn} = this.state;
         return (
             dataLoaded &&
             (<div>
                 <div>
-                    <CapacityOffloadGraph data={bandwidthData}/>
+                    <CapacityOffloadGraph data={bandwidthData} maxCdn = {bandwidthMaxCdn}/>
                 </div>
                 <div>
                     <ConcurrentViewersGraph data={audienceData}/>

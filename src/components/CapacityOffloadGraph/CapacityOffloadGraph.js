@@ -94,6 +94,7 @@ export default class CapacityOffloadGraph extends React.Component {
               dataKey="cdn"
               stackId="1"
               stroke="#C42151"
+              strokeWidth={3}
               fill="#C42151"
             />
             <Area
@@ -101,6 +102,7 @@ export default class CapacityOffloadGraph extends React.Component {
               dataKey="p2p"
               stackId="1"
               stroke="#12A5ED"
+              strokeWidth={3}
               fill="#12A5ED"
             />
             <ReferenceLine

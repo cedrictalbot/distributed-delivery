@@ -2,8 +2,8 @@ import React from "react";
 import axios from "axios";
 import cookie from "react-cookies";
 
-import CapacityOffloadGraph from "./CapacityOffloadGraph";
-import ConcurrentViewersGraph from "./ConcurrentViewersGraph";
+import CapacityOffloadGraph from "../CapacityOffloadGraph/CapacityOffloadGraph";
+import ConcurrentViewersGraph from "../ConcurrentViewersGraph/ConcurrentViewersGraph";
 
 export default class GraphContainer extends React.Component {
   constructor(props) {

@@ -1,6 +1,7 @@
 import React from 'react';
 import {AreaChart, XAxis, YAxis, Tooltip, Area, ReferenceLine} from 'recharts';
 
+import CustomTooltip from './CustomTooltip';
 
 export default class CapacityOffloadGraph extends React.Component {
     constructor(props) {
@@ -58,7 +59,7 @@ export default class CapacityOffloadGraph extends React.Component {
         const maxCdn = (this.props.maxCdn/ 10**9).toFixed(2);
         const maxCdnP2p = this.state.maxCdnP2p ? this.state.maxCdnP2p.toFixed(2) : 0;
         return (
-            <AreaChart width={1000} height={500} data={this.state.chartData}>
+            <AreaChart width={1600} height={300} data={this.state.chartData}>
                 <XAxis 
                     dataKey="date" 
                     tickFormatter={(label) =>{
@@ -68,7 +69,7 @@ export default class CapacityOffloadGraph extends React.Component {
                     ticks = {ticks}
                 />
                 <YAxis tickFormatter={(label) => label ? `${label}\nGbps` : label}/>
-                <Tooltip />
+                <Tooltip content={<CustomTooltip/>}/>
                 <Area type='monotone' dataKey='cdn' stackId="1" stroke='#C42151' fill='#C42151' />
                 <Area type='monotone' dataKey='p2p' stackId="1" stroke='#12A5ED' fill='#12A5ED' />
                 <ReferenceLine y={maxCdn} label={{value :`Maximum CDN contribution : ${maxCdn} Gbps`, position: 'insideBottomLeft'}} stroke='#C42151' strokeDasharray="5 2"/>

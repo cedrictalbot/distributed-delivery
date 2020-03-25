@@ -1,7 +1,7 @@
 import React from "react";
-import "./CustomTooltip.css";
+import "./CustomTooltipCO.css";
 
-export default class CustomTooltip extends React.Component {
+export default class CustomTooltipCO extends React.Component {
   formatDate(date) {
     const d = new Date(date);
     return d.toLocaleDateString("en-US", {

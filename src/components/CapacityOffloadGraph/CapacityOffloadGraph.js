@@ -9,7 +9,7 @@ import {
   ResponsiveContainer
 } from "recharts";
 
-import CustomTooltip from "../CustomTooltip/CustomTooltip";
+import CustomTooltipCO from "./CustomTooltipCO/CustomTooltipCO";
 import "./CapacityOffloadGraph.css";
 
 export default class CapacityOffloadGraph extends React.Component {
@@ -74,7 +74,7 @@ export default class CapacityOffloadGraph extends React.Component {
       <div className="capacity-offload-graph">
         <label>CAPACITY OFFLOAD</label>
         <ResponsiveContainer>
-          <AreaChart width={1600} height={300} data={this.state.chartData}>
+          <AreaChart data={this.state.chartData}>
             <XAxis
               dataKey="date"
               tickFormatter={label => {
@@ -88,7 +88,7 @@ export default class CapacityOffloadGraph extends React.Component {
             <YAxis
               tickFormatter={label => (label ? `${label}\nGbps` : label)}
             />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={<CustomTooltipCO />} />
             <Area
               type="monotone"
               dataKey="cdn"

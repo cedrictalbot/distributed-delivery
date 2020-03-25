@@ -5,7 +5,8 @@ import {
   YAxis,
   Tooltip,
   Area,
-  ReferenceLine
+  ReferenceLine,
+  ResponsiveContainer
 } from "recharts";
 
 import CustomTooltip from "../CustomTooltip/CustomTooltip";
@@ -72,52 +73,56 @@ export default class CapacityOffloadGraph extends React.Component {
     return (
       <div className="capacity-offload-graph">
         <label>CAPACITY OFFLOAD</label>
-        <AreaChart width={1600} height={300} data={this.state.chartData}>
-          <XAxis
-            dataKey="date"
-            tickFormatter={label => {
-              const d = new Date(label);
-              return `${d.getDate()} ${d.toLocaleString("en-US", {
-                month: "short"
-              })}`;
-            }}
-            ticks={ticks}
-          />
-          <YAxis tickFormatter={label => (label ? `${label}\nGbps` : label)} />
-          <Tooltip content={<CustomTooltip />} />
-          <Area
-            type="monotone"
-            dataKey="cdn"
-            stackId="1"
-            stroke="#C42151"
-            fill="#C42151"
-          />
-          <Area
-            type="monotone"
-            dataKey="p2p"
-            stackId="1"
-            stroke="#12A5ED"
-            fill="#12A5ED"
-          />
-          <ReferenceLine
-            y={maxCdn}
-            label={{
-              value: `Maximum CDN contribution : ${maxCdn} Gbps`,
-              position: "insideBottomLeft"
-            }}
-            stroke="#C42151"
-            strokeDasharray="5 2"
-          />
-          <ReferenceLine
-            y={maxCdnP2p}
-            label={{
-              value: `Maximum throughput : ${maxCdnP2p} Gbps`,
-              position: "insideBottomRight"
-            }}
-            stroke="#3FCB7E"
-            strokeDasharray="5 2"
-          />
-        </AreaChart>
+        <ResponsiveContainer>
+          <AreaChart width={1600} height={300} data={this.state.chartData}>
+            <XAxis
+              dataKey="date"
+              tickFormatter={label => {
+                const d = new Date(label);
+                return `${d.getDate()} ${d.toLocaleString("en-US", {
+                  month: "short"
+                })}`;
+              }}
+              ticks={ticks}
+            />
+            <YAxis
+              tickFormatter={label => (label ? `${label}\nGbps` : label)}
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <Area
+              type="monotone"
+              dataKey="cdn"
+              stackId="1"
+              stroke="#C42151"
+              fill="#C42151"
+            />
+            <Area
+              type="monotone"
+              dataKey="p2p"
+              stackId="1"
+              stroke="#12A5ED"
+              fill="#12A5ED"
+            />
+            <ReferenceLine
+              y={maxCdn}
+              label={{
+                value: `Maximum CDN contribution : ${maxCdn} Gbps`,
+                position: "insideBottomLeft"
+              }}
+              stroke="#C42151"
+              strokeDasharray="5 2"
+            />
+            <ReferenceLine
+              y={maxCdnP2p}
+              label={{
+                value: `Maximum throughput : ${maxCdnP2p} Gbps`,
+                position: "insideBottomRight"
+              }}
+              stroke="#3FCB7E"
+              strokeDasharray="5 2"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
       </div>
     );
   }

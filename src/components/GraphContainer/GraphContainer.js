@@ -4,6 +4,7 @@ import cookie from "react-cookies";
 
 import CapacityOffloadGraph from "../CapacityOffloadGraph/CapacityOffloadGraph";
 import ConcurrentViewersGraph from "../ConcurrentViewersGraph/ConcurrentViewersGraph";
+import './GraphContainer.css';
 
 export default class GraphContainer extends React.Component {
   constructor(props) {
@@ -99,11 +100,13 @@ export default class GraphContainer extends React.Component {
     return (
       dataLoaded && (
         <div>
-          <div>
+          <div className="graph-container">
             <CapacityOffloadGraph
               data={bandwidthData}
               maxCdn={bandwidthMaxCdn}
             />
+          </div>
+          <div className="graph-container">
             <ConcurrentViewersGraph data={audienceData} />
           </div>
         </div>

@@ -4,6 +4,8 @@ import cookie from "react-cookies";
 
 import CapacityOffloadGraph from "../CapacityOffloadGraph/CapacityOffloadGraph";
 import ConcurrentViewersGraph from "../ConcurrentViewersGraph/ConcurrentViewersGraph";
+import Efficiency from "../Efficiency/Efficiency";
+
 import "./GraphContainer.css";
 
 export default class GraphContainer extends React.Component {
@@ -127,10 +129,12 @@ export default class GraphContainer extends React.Component {
           <div className="graph-container">
             <ConcurrentViewersGraph
               data={audienceData}
-              handleUpdate={this.handleUpdate}
               startIndex={startIndex}
               endIndex={endIndex}
             />
+          </div>
+          <div className="efficiency">
+            <Efficiency data={audienceData} handleUpdate={this.handleUpdate} />
           </div>
         </div>
       )

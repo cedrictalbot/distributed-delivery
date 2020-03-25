@@ -85,11 +85,6 @@ export default class ConcurrentViewersGraph extends React.Component {
               strokeWidth={3}
               dot={false}
             />
-            <Brush onChange={this.props.handleUpdate}>
-              <AreaChart data={this.state.chartData}>
-                <Area dataKey="audience" stroke="#3FCB7E" fill="#3FCB7E" />
-              </AreaChart>
-            </Brush>
           </LineChart>
         </ResponsiveContainer>
       </div>

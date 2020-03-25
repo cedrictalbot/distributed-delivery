@@ -8,6 +8,7 @@ import {
   Tooltip
 } from "recharts";
 
+import CustomTooltipCV from './CustomTooltipCV/CustomTooltipCV';
 import "./ConcurrentViewersGraph.css";
 
 export default class ConcurrentViewersGraph extends React.Component {
@@ -70,7 +71,7 @@ export default class ConcurrentViewersGraph extends React.Component {
               ticks={ticks}
             />
             <YAxis />
-            <Tooltip />
+            <Tooltip content={<CustomTooltipCV />} />
             <Line
               type="monotone"
               dataKey="audience"

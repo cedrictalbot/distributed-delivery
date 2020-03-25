@@ -51,12 +51,16 @@ export default class CapacityOffloadGraph extends React.Component {
       return [];
     }
     var ticks = [];
-    var d = new Date(this.state.chartData[0].date);
+    var i = 0;
+    var d = new Date(this.state.chartData[i].date);
+    while (d.getHours() != 0 && i < this.state.chartData.length) {
+      i = i + 1;
+      d = new Date(this.state.chartData[i].date);
+    }
     const endDate = new Date(
       this.state.chartData[this.state.chartData.length - 1].date
     );
     // We suppose here timestamps are regular enough there will be a data everyday at the same time
-    // Another option would be to take the closest timestamp to 12AM
     while (d < endDate) {
       ticks.push(d.getTime());
       d.setDate(d.getDate() + 1);

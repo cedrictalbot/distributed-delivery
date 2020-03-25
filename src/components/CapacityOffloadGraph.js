@@ -57,14 +57,13 @@ export default class CapacityOffloadGraph extends React.Component {
         const ticks = this.getTicks();
         const maxCdn = (this.props.maxCdn/ 10**9).toFixed(2);
         const maxCdnP2p = this.state.maxCdnP2p ? this.state.maxCdnP2p.toFixed(2) : 0;
-        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         return (
-            <AreaChart width={1000} height={300} data={this.state.chartData}>
+            <AreaChart width={1000} height={500} data={this.state.chartData}>
                 <XAxis 
                     dataKey="date" 
                     tickFormatter={(label) =>{
                         const d = new Date(label);
-                        return(`${d.getDate()} ${months[d.getMonth()]}`)
+                        return(`${d.getDate()} ${d.toLocaleString('en-US', { month: 'short' })}`)
                     }}
                     ticks = {ticks}
                 />

@@ -63,9 +63,9 @@ export default class CapacityOffloadGraph extends React.Component {
     var ticks = [];
     var i = this.props.startIndex;
     var d = new Date(this.state.chartData[i].date);
-    while (d.getHours() !== 0 && i <= this.state.chartData.length) {
-      i = i + 1;
+    while (d.getHours() !== 0 && i < this.state.chartData.length) {
       d = new Date(this.state.chartData[i].date);
+      i = i + 1;
     }
     const endDate = new Date(
       this.state.chartData[this.state.chartData.length - 1].date

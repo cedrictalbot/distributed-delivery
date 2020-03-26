@@ -1,17 +1,16 @@
 .custom-tooltip {
-    background-color: white;
-    padding: 0 5px;
-    border: 1px solid #e1e8ed;
-    border-radius: 5px;
-    text-align: left;
-    font-size: small;
-  }
+  background-color: white;
+  padding: 0 5px;
+  border: 1px solid #e1e8ed;
+  border-radius: 5px;
+  text-align: left;
+  font-size: small;
+}
 
-  .viewers {
-    color: #DDA02A;
-  }
+.viewers {
+  color: #dda02a;
+}
 
-  .tooltip-label {
-    color: #a1aeb8;
-  }
-  
+.tooltip-label {
+  color: #a1aeb8;
+}

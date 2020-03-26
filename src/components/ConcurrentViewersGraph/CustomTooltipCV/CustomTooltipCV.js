@@ -22,11 +22,11 @@ export default class CustomTooltipCV extends React.Component {
 
       return (
         <div className="custom-tooltip">
-            <p className="date">{this.formatDate(label)}</p>
-            <p className="viewers">
-              <label className="tooltip-label">Viewers :</label>
-              {payload[0].value}
-            </p>
+          <p className="date">{this.formatDate(label)}</p>
+          <p className="viewers">
+            <label className="tooltip-label">Viewers :</label>
+            {payload[0].value}
+          </p>
         </div>
       );
     }

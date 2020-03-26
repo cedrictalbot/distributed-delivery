@@ -19,7 +19,7 @@ export default class Efficiency extends React.Component {
     super(props);
 
     this.state = {
-      chartData: null,
+      chartData: null
     };
   }
 
@@ -41,38 +41,41 @@ export default class Efficiency extends React.Component {
 
   render() {
     return (
-      <div className="efficiency-container">
-      <DatePicker
-        selected={this.props.startDate}
-        onChange={this.props.handleStartDateChange}
-        dateFormat="d MMMM yyyy"
-      />
-      <div className="brush-container">
-        <ResponsiveContainer>
-          <BarChart
-            data={this.state.chartData}
-            syncId="charts"
-            margin={{
-              left: 0,
-              right: 0,
-              bottom: 0,
-              top: 0
-            }}
-          >
-            <Bar dataKey="measurement" maxBarSize={0} />
-            <Brush stroke="#1D874D" onChange={this.props.handleBrushUpdate}>
-              <AreaChart data={this.state.chartData}>
-                <Area dataKey="audience" stroke="#3FCB7E" fill="#3FCB7E" />
-              </AreaChart>
-            </Brush>
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-      <DatePicker
-        selected={this.props.endDate}
-        onChange={this.props.handleEndDateChange}
-        dateFormat="d MMMM yyyy"
-      />
+      <div className="main-container">
+        <label>EFFICIENCY</label>
+        <div className="efficiency-container">
+          <DatePicker
+            selected={this.props.startDate}
+            onChange={this.props.handleStartDateChange}
+            dateFormat="d MMMM yyyy"
+          />
+          <div className="brush-container">
+            <ResponsiveContainer>
+              <BarChart
+                data={this.state.chartData}
+                syncId="charts"
+                margin={{
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  top: 0
+                }}
+              >
+                <Bar dataKey="measurement" maxBarSize={0} />
+                <Brush stroke="#1D874D" onChange={this.props.handleBrushUpdate}>
+                  <AreaChart data={this.state.chartData}>
+                    <Area dataKey="audience" stroke="#3FCB7E" fill="#3FCB7E" />
+                  </AreaChart>
+                </Brush>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <DatePicker
+            selected={this.props.endDate}
+            onChange={this.props.handleEndDateChange}
+            dateFormat="d MMMM yyyy"
+          />
+        </div>
       </div>
     );
   }

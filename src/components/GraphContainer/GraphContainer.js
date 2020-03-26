@@ -12,7 +12,7 @@ export default class GraphContainer extends React.Component {
   constructor(props) {
     super(props);
 
-    const today = Date.now()
+    const today = Date.now();
     this.state = {
       dataLoaded: false,
       bandwidthData: null,
@@ -160,7 +160,7 @@ export default class GraphContainer extends React.Component {
           <div className="efficiency">
             <Efficiency
               data={audienceData}
-              handleUpdate={this.handleBrushUpdate}
+              handleBrushUpdate={this.handleBrushUpdate}
               handleStartDateChange={this.handleStartDateChange}
               handleEndDateChange={this.handleEndDateChange}
               startDate={startDate}

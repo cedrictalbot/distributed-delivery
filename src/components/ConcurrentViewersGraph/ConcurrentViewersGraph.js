@@ -5,10 +5,7 @@ import {
   YAxis,
   Line,
   ResponsiveContainer,
-  Tooltip,
-  Brush,
-  AreaChart,
-  Area
+  Tooltip
 } from "recharts";
 
 import CustomTooltipCV from "./CustomTooltipCV/CustomTooltipCV";
@@ -19,17 +16,19 @@ export default class ConcurrentViewersGraph extends React.Component {
     super(props);
 
     this.state = {
-      chartData: null
+      chartData: []
     };
   }
 
   getChartData() {
     var chartData = [];
     this.props.data.audience.map(value => {
-      chartData.push({
-        date: value[0],
-        audience: value[1]
-      });
+      if (value[0] > this.props.startDate && value[0] < this.props.endDate) {
+        chartData.push({
+          date: value[0],
+          audience: value[1]
+        });
+      }
       return value;
     });
     this.setState({ chartData });
@@ -39,15 +38,26 @@ export default class ConcurrentViewersGraph extends React.Component {
     this.getChartData();
   }
 
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.endDate !== this.props.endDate ||
+      prevProps.startDate !== this.props.startDate
+    ) {
+      this.getChartData();
+    }
+  }
+
   getTicks() {
     var ticks = [];
     var i = this.props.startIndex;
     var d = new Date(this.state.chartData[i].date);
-    while (d.getHours() !== 0 && i <= this.props.endIndex) {
+    while (d.getHours() !== 0 && i < this.state.chartData.length) {
       i = i + 1;
       d = new Date(this.state.chartData[i].date);
     }
-    const endDate = new Date(this.state.chartData[this.props.endIndex].date);
+    const endDate = new Date(
+      this.state.chartData[this.state.chartData.length - 1].date
+    );
     // We suppose here timestamps are regular enough there will be a data everyday at the same time
     while (d < endDate) {
       ticks.push(d.getTime());
@@ -57,8 +67,13 @@ export default class ConcurrentViewersGraph extends React.Component {
   }
 
   render() {
-    if (!this.state.chartData) {
-      return null;
+    if (this.state.chartData.length === 0) {
+      return (
+        <div>
+          There is no audience data available for these dates, please pick
+          another time interval
+        </div>
+      );
     }
     const ticks = this.getTicks();
     return (

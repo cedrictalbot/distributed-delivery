@@ -17,7 +17,7 @@ export default class CapacityOffloadGraph extends React.Component {
     super(props);
 
     this.state = {
-      chartData: null,
+      chartData: [],
       maxCdnP2p: null
     };
   }
@@ -27,17 +27,22 @@ export default class CapacityOffloadGraph extends React.Component {
     var chartData = [];
     var maxCdnP2p = 0;
     for (var i in data.cdn) {
-      // We suppose for now that cdn and p2p have the same timestamps in the same order
-      var cdn = data.cdn[i][1] / 10 ** 9;
-      var p2p = data.p2p[i][1] / 10 ** 9;
-      if (cdn + p2p > maxCdnP2p) {
-        maxCdnP2p = cdn + p2p;
+      if (
+        data.cdn[i][0] > this.props.startDate &&
+        data.cdn[i][0] < this.props.endDate
+      ) {
+        // We suppose for now that cdn and p2p have the same timestamps in the same order
+        var cdn = data.cdn[i][1] / 10 ** 9;
+        var p2p = data.p2p[i][1] / 10 ** 9;
+        if (cdn + p2p > maxCdnP2p) {
+          maxCdnP2p = cdn + p2p;
+        }
+        chartData.push({
+          date: data.cdn[i][0],
+          cdn: cdn,
+          p2p: p2p
+        });
       }
-      chartData.push({
-        date: data.cdn[i][0],
-        cdn: cdn,
-        p2p: p2p
-      });
     }
     this.setState({ chartData, maxCdnP2p });
   }
@@ -46,15 +51,20 @@ export default class CapacityOffloadGraph extends React.Component {
     this.getChartData();
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.endDate !== this.props.endDate || prevProps.startDate !== this.props.startDate) {
+      this.getChartData();
+    }
+  }
   getTicks() {
     var ticks = [];
     var i = this.props.startIndex;
     var d = new Date(this.state.chartData[i].date);
-    while (d.getHours() !== 0 && i <= this.props.endIndex) {
+    while (d.getHours() !== 0 && i <= this.state.chartData.length) {
       i = i + 1;
       d = new Date(this.state.chartData[i].date);
     }
-    const endDate = new Date(this.state.chartData[this.props.endIndex].date);
+    const endDate = new Date(this.state.chartData[this.state.chartData.length - 1].date);
     // We suppose here timestamps are regular enough there will be a data everyday at the same time
     while (d < endDate) {
       ticks.push(d.getTime());
@@ -64,8 +74,8 @@ export default class CapacityOffloadGraph extends React.Component {
   }
 
   render() {
-    if (!this.state.chartData) {
-      return [];
+    if (this.state.chartData.length === 0) {
+      return <div>There is no bandwidth data available for these dates, please pick another time interval</div>;
     }
     const ticks = this.getTicks();
     const maxCdn = (this.props.maxCdn / 10 ** 9).toFixed(2);

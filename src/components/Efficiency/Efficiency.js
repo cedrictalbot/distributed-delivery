@@ -7,6 +7,9 @@ import {
   AreaChart,
   Area
 } from "recharts";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 import "./Efficiency.css";
 
@@ -16,7 +19,7 @@ export default class Efficiency extends React.Component {
     super(props);
 
     this.state = {
-      chartData: null
+      chartData: null,
     };
   }
 
@@ -39,6 +42,12 @@ export default class Efficiency extends React.Component {
   render() {
     return (
       <div className="efficiency-container">
+      <DatePicker
+        selected={this.props.startDate}
+        onChange={this.props.handleStartDateChange}
+        dateFormat="d MMMM yyyy"
+      />
+      <div className="brush-container">
         <ResponsiveContainer>
           <BarChart
             data={this.state.chartData}
@@ -51,13 +60,19 @@ export default class Efficiency extends React.Component {
             }}
           >
             <Bar dataKey="measurement" maxBarSize={0} />
-            <Brush stroke="#1D874D" onChange={this.props.handleUpdate}>
+            <Brush stroke="#1D874D" onChange={this.props.handleBrushUpdate}>
               <AreaChart data={this.state.chartData}>
                 <Area dataKey="audience" stroke="#3FCB7E" fill="#3FCB7E" />
               </AreaChart>
             </Brush>
           </BarChart>
         </ResponsiveContainer>
+      </div>
+      <DatePicker
+        selected={this.props.endDate}
+        onChange={this.props.handleEndDateChange}
+        dateFormat="d MMMM yyyy"
+      />
       </div>
     );
   }

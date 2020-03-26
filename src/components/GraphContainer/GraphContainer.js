@@ -12,6 +12,7 @@ export default class GraphContainer extends React.Component {
   constructor(props) {
     super(props);
 
+    const today = Date.now()
     this.state = {
       dataLoaded: false,
       bandwidthData: null,
@@ -19,10 +20,14 @@ export default class GraphContainer extends React.Component {
       audienceData: null,
       sessionToken: cookie.load("sessionToken"),
       startIndex: 0,
-      endIndex: null
+      endIndex: null,
+      startDate: today - 1209600000,
+      endDate: today
     };
 
-    this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleBrushUpdate = this.handleBrushUpdate.bind(this);
+    this.handleStartDateChange = this.handleStartDateChange.bind(this);
+    this.handleEndDateChange = this.handleEndDateChange.bind(this);
   }
 
   componentDidMount() {
@@ -50,7 +55,6 @@ export default class GraphContainer extends React.Component {
   }
 
   async getData() {
-    const today = Date.now();
     let data = {
       bandwidth: null,
       audience: null,
@@ -59,22 +63,22 @@ export default class GraphContainer extends React.Component {
     try {
       data.bandwidth = await axios.post("http://localhost:3000/bandwidth", {
         session_token: this.state.sessionToken,
-        from: today - 1209600000,
-        to: today
+        from: this.state.startDate,
+        to: this.state.endDate
       });
       data.bandwidthMaxCdn = await axios.post(
         "http://localhost:3000/bandwidth",
         {
           session_token: this.state.sessionToken,
-          from: today - 1209600000,
-          to: today,
+          from: this.state.startDate,
+          to: this.state.endDate,
           aggregate: "max"
         }
       );
       data.audience = await axios.post("http://localhost:3000/audience", {
         session_token: this.state.sessionToken,
-        from: today - 1209600000,
-        to: today
+        from: this.state.startDate,
+        to: this.state.endDate
       });
     } catch (err) {
       console.log(err);
@@ -97,7 +101,7 @@ export default class GraphContainer extends React.Component {
     cookie.remove("sessionToken");
   }
 
-  handleUpdate({ startIndex, endIndex }) {
+  handleBrushUpdate({ startIndex, endIndex }) {
     //Without this update function, the XAxis ticks will disappear
     //when moving the brush
     this.setState({
@@ -106,6 +110,20 @@ export default class GraphContainer extends React.Component {
     });
   }
 
+  handleStartDateChange = startDate => {
+    this.setState({
+      startDate: startDate.getTime(),
+      endDate: Math.max(this.state.endDate, startDate.getTime())
+    });
+  };
+
+  handleEndDateChange = endDate => {
+    this.setState({
+      startDate: Math.min(this.state.startDate, endDate.getTime()),
+      endDate: endDate.getTime()
+    });
+  };
+
   render() {
     const {
       dataLoaded,
@@ -113,7 +131,9 @@ export default class GraphContainer extends React.Component {
       audienceData,
       bandwidthMaxCdn,
       startIndex,
-      endIndex
+      endIndex,
+      startDate,
+      endDate
     } = this.state;
     return (
       dataLoaded && (
@@ -124,6 +144,8 @@ export default class GraphContainer extends React.Component {
               maxCdn={bandwidthMaxCdn}
               startIndex={startIndex}
               endIndex={endIndex}
+              startDate={startDate}
+              endDate={endDate}
             />
           </div>
           <div className="graph-container">
@@ -131,10 +153,19 @@ export default class GraphContainer extends React.Component {
               data={audienceData}
               startIndex={startIndex}
               endIndex={endIndex}
+              startDate={startDate}
+              endDate={endDate}
             />
           </div>
           <div className="efficiency">
-            <Efficiency data={audienceData} handleUpdate={this.handleUpdate} />
+            <Efficiency
+              data={audienceData}
+              handleUpdate={this.handleBrushUpdate}
+              handleStartDateChange={this.handleStartDateChange}
+              handleEndDateChange={this.handleEndDateChange}
+              startDate={startDate}
+              endDate={endDate}
+            />
           </div>
         </div>
       )

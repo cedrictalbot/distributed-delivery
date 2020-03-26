@@ -52,7 +52,10 @@ export default class CapacityOffloadGraph extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.endDate !== this.props.endDate || prevProps.startDate !== this.props.startDate) {
+    if (
+      prevProps.endDate !== this.props.endDate ||
+      prevProps.startDate !== this.props.startDate
+    ) {
       this.getChartData();
     }
   }
@@ -64,7 +67,9 @@ export default class CapacityOffloadGraph extends React.Component {
       i = i + 1;
       d = new Date(this.state.chartData[i].date);
     }
-    const endDate = new Date(this.state.chartData[this.state.chartData.length - 1].date);
+    const endDate = new Date(
+      this.state.chartData[this.state.chartData.length - 1].date
+    );
     // We suppose here timestamps are regular enough there will be a data everyday at the same time
     while (d < endDate) {
       ticks.push(d.getTime());
@@ -75,7 +80,12 @@ export default class CapacityOffloadGraph extends React.Component {
 
   render() {
     if (this.state.chartData.length === 0) {
-      return <div>There is no bandwidth data available for these dates, please pick another time interval</div>;
+      return (
+        <div>
+          There is no bandwidth data available for these dates, please pick
+          another time interval
+        </div>
+      );
     }
     const ticks = this.getTicks();
     const maxCdn = (this.props.maxCdn / 10 ** 9).toFixed(2);
@@ -122,7 +132,7 @@ export default class CapacityOffloadGraph extends React.Component {
               label={{
                 value: `Maximum CDN contribution : ${maxCdn} Gbps`,
                 position: "insideBottomLeft",
-                style: {'font-size':'small'}
+                style: { "fontSize": "small" }
               }}
               stroke="#C42151"
               strokeDasharray="5 2"
@@ -132,7 +142,7 @@ export default class CapacityOffloadGraph extends React.Component {
               label={{
                 value: `Maximum throughput : ${maxCdnP2p} Gbps`,
                 position: "insideBottomRight",
-                style: {'font-size':'small'}
+                style: { "fontSize": "small" }
               }}
               stroke="#3FCB7E"
               strokeDasharray="5 2"

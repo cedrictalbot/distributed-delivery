@@ -2,9 +2,9 @@ import React from "react";
 import axios from "axios";
 import cookie from "react-cookies";
 
-import CapacityOffloadGraph from "../CapacityOffloadGraph/CapacityOffloadGraph";
-import ConcurrentViewersGraph from "../ConcurrentViewersGraph/ConcurrentViewersGraph";
-import Efficiency from "../Efficiency/Efficiency";
+import CapacityOffloadGraph from "../../components/CapacityOffloadGraph/CapacityOffloadGraph";
+import ConcurrentViewersGraph from "../../components/ConcurrentViewersGraph/ConcurrentViewersGraph";
+import Efficiency from "../../components/Efficiency/Efficiency";
 
 import "./GraphContainer.css";
 
@@ -28,6 +28,7 @@ export default class GraphContainer extends React.Component {
     this.handleBrushUpdate = this.handleBrushUpdate.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
   }
 
   componentDidMount() {
@@ -111,6 +112,8 @@ export default class GraphContainer extends React.Component {
   }
 
   handleStartDateChange = startDate => {
+    startDate.setHours(0,0,0);
+    document.getElementById("period-choices").value = "";
     this.setState({
       startDate: startDate.getTime(),
       endDate: Math.max(this.state.endDate, startDate.getTime())
@@ -118,12 +121,44 @@ export default class GraphContainer extends React.Component {
   };
 
   handleEndDateChange = endDate => {
+    endDate.setHours(23,59,59);
+    document.getElementById("period-choices").value = "";
     this.setState({
       startDate: Math.min(this.state.startDate, endDate.getTime()),
       endDate: endDate.getTime()
     });
   };
 
+  handleSelectChange = event => {
+    const value = event.target.value;
+    var d = new Date();
+    const todayTimestamp = d.getTime();
+    switch(value) {
+      case "month":
+        d.setMonth(d.getMonth() - 1)
+        this.setState({
+          startDate: d.getTime(),
+          endDate: todayTimestamp
+        })
+        break;
+      case "week":
+        d.setDate(d.getDate() - 7)
+        this.setState({
+          startDate: d.getTime(),
+          endDate: todayTimestamp
+        })
+        break;
+      case "day":
+        d.setDate(d.getDate() - 1)
+        this.setState({
+          startDate: d.getTime(),
+          endDate: todayTimestamp
+        })
+        break;
+      default:
+        break;
+    }
+  }
   render() {
     const {
       dataLoaded,
@@ -138,6 +173,14 @@ export default class GraphContainer extends React.Component {
     return (
       dataLoaded && (
         <div>
+          <div className="select-container">
+            <select id="period-choices" defaultValue="month" onChange={this.handleSelectChange}>
+              <option value=""></option>
+              <option value="month">Last month</option>
+              <option value="week">Last week</option>
+              <option value="day">Last day</option>
+            </select>
+          </div>
           <div className="graph-container">
             <CapacityOffloadGraph
               data={bandwidthData}

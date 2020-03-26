@@ -1,5 +1,5 @@
 import React from "react";
-import GraphContainer from "./components/GraphContainer/GraphContainer";
+import GraphContainer from "./containers/GraphContainer/GraphContainer";
 import "./App.css";
 
 function App() {

@@ -35,7 +35,7 @@ export default class GraphContainer extends React.Component {
     if (!this.dataLoaded) {
       if (!this.state.sessionToken) {
         axios
-          .post("http://localhost:3000/auth", {
+          .post(`${process.env.REACT_APP_BACKEND_API}/auth`, {
             identifiant: "urtoob",
             password: "ToobRU"
           })
@@ -62,13 +62,16 @@ export default class GraphContainer extends React.Component {
       bandwidthMaxCdn: null
     };
     try {
-      data.bandwidth = await axios.post("http://localhost:3000/bandwidth", {
-        session_token: this.state.sessionToken,
-        from: this.state.startDate,
-        to: this.state.endDate
-      });
+      data.bandwidth = await axios.post(
+        `${process.env.REACT_APP_BACKEND_API}/bandwidth`,
+        {
+          session_token: this.state.sessionToken,
+          from: this.state.startDate,
+          to: this.state.endDate
+        }
+      );
       data.bandwidthMaxCdn = await axios.post(
-        "http://localhost:3000/bandwidth",
+        `${process.env.REACT_APP_BACKEND_API}/bandwidth`,
         {
           session_token: this.state.sessionToken,
           from: this.state.startDate,
@@ -76,11 +79,14 @@ export default class GraphContainer extends React.Component {
           aggregate: "max"
         }
       );
-      data.audience = await axios.post("http://localhost:3000/audience", {
-        session_token: this.state.sessionToken,
-        from: this.state.startDate,
-        to: this.state.endDate
-      });
+      data.audience = await axios.post(
+        `${process.env.REACT_APP_BACKEND_API}/audience`,
+        {
+          session_token: this.state.sessionToken,
+          from: this.state.startDate,
+          to: this.state.endDate
+        }
+      );
     } catch (err) {
       console.log(err);
     }
@@ -95,7 +101,7 @@ export default class GraphContainer extends React.Component {
 
   componentWillUnmount() {
     if (this.state.sessionToken) {
-      axios.post("http://localhost:3000/logout", {
+      axios.post(`${process.env.REACT_APP_BACKEND_API}/logout`, {
         session_token: this.state.sessionToken
       });
     }

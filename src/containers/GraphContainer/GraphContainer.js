@@ -184,7 +184,9 @@ export default class GraphContainer extends React.Component {
       dataLoaded && (
         <div>
           <div className="select-container">
+            <label className="select-label">SELECT</label>
             <select
+              className="select"
               id="period-choices"
               defaultValue="month"
               onChange={this.handleSelectChange}

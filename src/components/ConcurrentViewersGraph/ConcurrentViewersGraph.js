@@ -49,7 +49,7 @@ export default class ConcurrentViewersGraph extends React.Component {
 
   getTicks() {
     var ticks = [];
-    var i = this.props.startIndex;
+    var i = Math.min(this.props.startIndex, this.state.chartData.length - 1);
     var d = new Date(this.state.chartData[i].date);
     while (d.getHours() !== 0 && i < this.state.chartData.length) {
       d = new Date(this.state.chartData[i].date);

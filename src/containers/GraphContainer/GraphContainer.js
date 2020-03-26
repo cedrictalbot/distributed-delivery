@@ -112,20 +112,24 @@ export default class GraphContainer extends React.Component {
   }
 
   handleStartDateChange = startDate => {
-    startDate.setHours(0,0,0);
+    startDate.setHours(0, 0, 0);
     document.getElementById("period-choices").value = "";
     this.setState({
       startDate: startDate.getTime(),
-      endDate: Math.max(this.state.endDate, startDate.getTime())
+      endDate: Math.max(this.state.endDate, startDate.getTime()),
+      startIndex: 0,
+      endIndex: this.state.audienceData.audience.length - 1
     });
   };
 
   handleEndDateChange = endDate => {
-    endDate.setHours(23,59,59);
+    endDate.setHours(23, 59, 59);
     document.getElementById("period-choices").value = "";
     this.setState({
       startDate: Math.min(this.state.startDate, endDate.getTime()),
-      endDate: endDate.getTime()
+      endDate: endDate.getTime(),
+      startIndex: 0,
+      endIndex: this.state.audienceData.audience.length - 1
     });
   };
 
@@ -133,32 +137,38 @@ export default class GraphContainer extends React.Component {
     const value = event.target.value;
     var d = new Date();
     const todayTimestamp = d.getTime();
-    switch(value) {
+    switch (value) {
       case "month":
-        d.setMonth(d.getMonth() - 1)
+        d.setMonth(d.getMonth() - 1);
         this.setState({
           startDate: d.getTime(),
-          endDate: todayTimestamp
-        })
+          endDate: todayTimestamp,
+          startIndex: 0,
+          endIndex: this.state.audienceData.audience.length - 1
+        });
         break;
       case "week":
-        d.setDate(d.getDate() - 7)
+        d.setDate(d.getDate() - 7);
         this.setState({
           startDate: d.getTime(),
-          endDate: todayTimestamp
-        })
+          endDate: todayTimestamp,
+          startIndex: 0,
+          endIndex: this.state.audienceData.audience.length - 1
+        });
         break;
       case "day":
-        d.setDate(d.getDate() - 1)
+        d.setDate(d.getDate() - 1);
         this.setState({
           startDate: d.getTime(),
-          endDate: todayTimestamp
-        })
+          endDate: todayTimestamp,
+          startIndex: 0,
+          endIndex: this.state.audienceData.audience.length - 1
+        });
         break;
       default:
         break;
     }
-  }
+  };
   render() {
     const {
       dataLoaded,
@@ -174,7 +184,11 @@ export default class GraphContainer extends React.Component {
       dataLoaded && (
         <div>
           <div className="select-container">
-            <select id="period-choices" defaultValue="month" onChange={this.handleSelectChange}>
+            <select
+              id="period-choices"
+              defaultValue="month"
+              onChange={this.handleSelectChange}
+            >
               <option value=""></option>
               <option value="month">Last month</option>
               <option value="week">Last week</option>

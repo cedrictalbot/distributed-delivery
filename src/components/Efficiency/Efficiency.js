@@ -26,10 +26,12 @@ export default class Efficiency extends React.Component {
   getChartData() {
     var chartData = [];
     this.props.data.audience.map(value => {
-      chartData.push({
-        date: value[0],
-        audience: value[1]
-      });
+      if (value[0] > this.props.startDate && value[0] < this.props.endDate) {
+        chartData.push({
+          date: value[0],
+          audience: value[1]
+        });
+      }
       return value;
     });
     this.setState({ chartData });
@@ -37,6 +39,15 @@ export default class Efficiency extends React.Component {
 
   componentDidMount() {
     this.getChartData();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.endDate !== this.props.endDate ||
+      prevProps.startDate !== this.props.startDate
+    ) {
+      this.getChartData();
+    }
   }
 
   render() {

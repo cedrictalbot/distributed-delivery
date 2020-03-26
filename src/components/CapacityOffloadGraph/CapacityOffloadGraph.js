@@ -121,7 +121,8 @@ export default class CapacityOffloadGraph extends React.Component {
               y={maxCdn}
               label={{
                 value: `Maximum CDN contribution : ${maxCdn} Gbps`,
-                position: "insideBottomLeft"
+                position: "insideBottomLeft",
+                style: {'font-size':'small'}
               }}
               stroke="#C42151"
               strokeDasharray="5 2"
@@ -130,7 +131,8 @@ export default class CapacityOffloadGraph extends React.Component {
               y={maxCdnP2p}
               label={{
                 value: `Maximum throughput : ${maxCdnP2p} Gbps`,
-                position: "insideBottomRight"
+                position: "insideBottomRight",
+                style: {'font-size':'small'}
               }}
               stroke="#3FCB7E"
               strokeDasharray="5 2"

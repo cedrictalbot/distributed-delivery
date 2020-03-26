@@ -75,6 +75,13 @@ export default class CapacityOffloadGraph extends React.Component {
       ticks.push(d.getTime());
       d.setDate(d.getDate() + 1);
     }
+    if (ticks.length === 0) {
+      //This can only happen if we have only one day selected.
+      //We will then set the date in the middle of the axis.
+      i = Math.floor(this.state.chartData.length / 2);
+      d = new Date(this.state.chartData[i].date);
+      ticks.push(d.getTime());
+    }
     return ticks;
   }
 
@@ -132,7 +139,7 @@ export default class CapacityOffloadGraph extends React.Component {
               label={{
                 value: `Maximum CDN contribution : ${maxCdn} Gbps`,
                 position: "insideBottomLeft",
-                style: { "fontSize": "small" }
+                style: { fontSize: "small" }
               }}
               stroke="#C42151"
               strokeDasharray="5 2"
@@ -142,7 +149,7 @@ export default class CapacityOffloadGraph extends React.Component {
               label={{
                 value: `Maximum throughput : ${maxCdnP2p} Gbps`,
                 position: "insideBottomRight",
-                style: { "fontSize": "small" }
+                style: { fontSize: "small" }
               }}
               stroke="#3FCB7E"
               strokeDasharray="5 2"

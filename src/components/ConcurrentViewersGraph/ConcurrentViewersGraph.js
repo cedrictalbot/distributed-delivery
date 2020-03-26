@@ -63,6 +63,13 @@ export default class ConcurrentViewersGraph extends React.Component {
       ticks.push(d.getTime());
       d.setDate(d.getDate() + 1);
     }
+    if (ticks.length === 0) {
+      //This can only happen if we have only one day selected.
+      //We will then set the date in the middle of the axis.
+      i = Math.floor(this.state.chartData.length / 2);
+      d = new Date(this.state.chartData[i].date);
+      ticks.push(d.getTime());
+    }
     return ticks;
   }
 

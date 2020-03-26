@@ -12,17 +12,22 @@ export default class GraphContainer extends React.Component {
   constructor(props) {
     super(props);
 
-    const today = Date.now();
+    //By default, retrieve all the data from the last month
+    const d = new Date();
+    const todayTimestamp = d.getTime();
+    d.setMonth(d.getMonth() - 1);
+
     this.state = {
       dataLoaded: false,
       bandwidthData: null,
       bandwidthMaxCdn: null,
       audienceData: null,
       sessionToken: cookie.load("sessionToken"),
+      //Brush indexes
       startIndex: 0,
       endIndex: null,
-      startDate: today - 1209600000,
-      endDate: today
+      startDate: d.getTime(),
+      endDate: todayTimestamp
     };
 
     this.handleBrushUpdate = this.handleBrushUpdate.bind(this);
@@ -33,6 +38,7 @@ export default class GraphContainer extends React.Component {
 
   componentDidMount() {
     if (!this.dataLoaded) {
+      //Log in if we don't already have a token
       if (!this.state.sessionToken) {
         axios
           .post(`${process.env.REACT_APP_BACKEND_API}/auth`, {
@@ -56,6 +62,7 @@ export default class GraphContainer extends React.Component {
   }
 
   async getData() {
+    //Retrieve all needed data from the backend
     let data = {
       bandwidth: null,
       audience: null,
@@ -118,6 +125,7 @@ export default class GraphContainer extends React.Component {
   }
 
   handleStartDateChange = startDate => {
+    // Sets the startDate to the value of the start DatePicker
     startDate.setHours(0, 0, 0);
     document.getElementById("period-choices").value = "";
     this.setState({
@@ -129,6 +137,7 @@ export default class GraphContainer extends React.Component {
   };
 
   handleEndDateChange = endDate => {
+    // Sets the endDate to the value of the end DatePicker
     endDate.setHours(23, 59, 59);
     document.getElementById("period-choices").value = "";
     this.setState({
@@ -140,6 +149,7 @@ export default class GraphContainer extends React.Component {
   };
 
   handleSelectChange = event => {
+    //Updates startDate and endDate depending on the selected value
     const value = event.target.value;
     var d = new Date();
     const todayTimestamp = d.getTime();
@@ -175,6 +185,7 @@ export default class GraphContainer extends React.Component {
         break;
     }
   };
+
   render() {
     const {
       dataLoaded,
@@ -186,6 +197,7 @@ export default class GraphContainer extends React.Component {
       startDate,
       endDate
     } = this.state;
+
     return (
       dataLoaded && (
         <div>

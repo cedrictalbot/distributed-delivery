@@ -24,6 +24,7 @@ export default class Efficiency extends React.Component {
   }
 
   getChartData() {
+    //Transform the input data to be used by the chart
     var chartData = [];
     this.props.data.audience.map(value => {
       if (value[0] > this.props.startDate && value[0] < this.props.endDate) {

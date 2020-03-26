@@ -21,6 +21,7 @@ export default class ConcurrentViewersGraph extends React.Component {
   }
 
   getChartData() {
+    //Transform the input data to be used by the chart
     var chartData = [];
     this.props.data.audience.map(value => {
       if (value[0] > this.props.startDate && value[0] < this.props.endDate) {
@@ -48,6 +49,7 @@ export default class ConcurrentViewersGraph extends React.Component {
   }
 
   getTicks() {
+    //Adds a tick per day, on the first value after midnight
     var ticks = [];
     var i = Math.min(this.props.startIndex, this.state.chartData.length - 1);
     var d = new Date(this.state.chartData[i].date);

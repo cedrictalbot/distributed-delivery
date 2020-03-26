@@ -23,6 +23,7 @@ export default class CapacityOffloadGraph extends React.Component {
   }
 
   getChartData() {
+    //Transform the input data to be used by the chart
     const { data } = this.props;
     var chartData = [];
     var maxCdnP2p = 0;
@@ -60,6 +61,7 @@ export default class CapacityOffloadGraph extends React.Component {
     }
   }
   getTicks() {
+    //Adds a tick per day, on the first value after midnight
     var ticks = [];
     var i = Math.min(this.props.startIndex, this.state.chartData.length - 1);
     var d = new Date(this.state.chartData[i].date);
